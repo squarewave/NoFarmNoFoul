@@ -1,0 +1,86 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Main.gd" type="Script" id=1]
+[ext_resource path="res://Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Mob.tscn" type="PackedScene" id=3]
+[ext_resource path="res://HUD.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Seed.tscn" type="PackedScene" id=5]
+[ext_resource path="res://music.wav" type="AudioStream" id=6]
+[ext_resource path="res://PauseManager.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Plant.tscn" type="PackedScene" id=8]
+[ext_resource path="res://wops.wav" type="AudioStream" id=9]
+[ext_resource path="res://UpgradeMenu.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Bomb.tscn" type="PackedScene" id=11]
+[ext_resource path="res://BigMob.tscn" type="PackedScene" id=12]
+[ext_resource path="res://background.png" type="Texture" id=13]
+
+[sub_resource type="Curve2D" id=1]
+_data = {
+"points": PoolVector2Array( 0, 0, 0, 0, -12, -19, 0, 0, 0, 0, -12, -19, 0, 0, 0, 0, -12, -19, 0, 0, 0, 0, 646, -8, 0, 0, 0, 0, 646, 368, 0, 0, 0, 0, -7, 365, 0, 0, 0, 0, -12, -19 )
+}
+
+[node name="Main" type="Node"]
+script = ExtResource( 1 )
+mob_scene = ExtResource( 3 )
+big_mob_scene = ExtResource( 12 )
+projectile_scene = ExtResource( 5 )
+plant_scene = ExtResource( 8 )
+bomb_scene = ExtResource( 11 )
+
+[node name="MobTimer" type="Timer" parent="."]
+wait_time = 10.0
+
+[node name="MobTimerTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="ProjectileTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[node name="StartTimer" type="Timer" parent="."]
+wait_time = 4.0
+one_shot = true
+
+[node name="NewPlantTimer" type="Timer" parent="."]
+wait_time = 18.0
+autostart = true
+
+[node name="StartPosition" type="Position2D" parent="."]
+position = Vector2( 320, 180 )
+
+[node name="MobPath" type="Path2D" parent="."]
+curve = SubResource( 1 )
+
+[node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
+position = Vector2( -12, -19 )
+rotation = 0.0167162
+
+[node name="HUD" parent="." instance=ExtResource( 4 )]
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
+stream = ExtResource( 6 )
+volume_db = -9.613
+
+[node name="PauseManager" parent="." instance=ExtResource( 7 )]
+
+[node name="Wops" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 9 )
+
+[node name="UpgradeMenu" parent="." instance=ExtResource( 10 )]
+visible = false
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 320, 180 )
+z_index = -2
+texture = ExtResource( 13 )
+
+[connection signal="timeout" from="MobTimer" to="." method="_on_MobTimer_timeout"]
+[connection signal="timeout" from="MobTimerTimer" to="." method="_on_MobTimerTimer_timeout"]
+[connection signal="timeout" from="ProjectileTimer" to="." method="_on_ProjectileTimer_timeout"]
+[connection signal="timeout" from="StartTimer" to="." method="_on_StartTimer_timeout"]
+[connection signal="timeout" from="NewPlantTimer" to="." method="_on_NewPlantTimer_timeout"]
+[connection signal="start_game" from="HUD" to="." method="new_game"]
+[connection signal="harvested" from="Player" to="." method="_on_Player_harvested"]
+[connection signal="hit" from="Player" to="." method="_on_Player_hit"]

@@ -1,0 +1,94 @@
+[gd_scene load_steps=24 format=2]
+
+[ext_resource path="res://mound.png" type="Texture" id=1]
+[ext_resource path="res://mound_flash.png" type="Texture" id=2]
+[ext_resource path="res://Plant.gd" type="Script" id=3]
+[ext_resource path="res://Planting.wav" type="AudioStream" id=4]
+[ext_resource path="res://stage4_pumpkin1.png" type="Texture" id=5]
+[ext_resource path="res://stage2_pumpkin2.png" type="Texture" id=6]
+[ext_resource path="res://stage1_pumpkin1.png" type="Texture" id=7]
+[ext_resource path="res://stage2_pumpkin1.png" type="Texture" id=8]
+[ext_resource path="res://stage1_pumpkin2.png" type="Texture" id=9]
+[ext_resource path="res://stage3_pumpkin2.png" type="Texture" id=10]
+[ext_resource path="res://stage3_pumpkin1.png" type="Texture" id=11]
+[ext_resource path="res://healthbar.png" type="Texture" id=12]
+[ext_resource path="res://final_pumpkin1.png" type="Texture" id=13]
+[ext_resource path="res://stage4_pumpkin2.png" type="Texture" id=14]
+[ext_resource path="res://final_pumpkin4.png" type="Texture" id=15]
+[ext_resource path="res://final_pumpkin2.png" type="Texture" id=16]
+[ext_resource path="res://final_pumpkin3.png" type="Texture" id=17]
+[ext_resource path="res://final_pumpkin5.png" type="Texture" id=18]
+[ext_resource path="res://harvest_text.png" type="Texture" id=19]
+[ext_resource path="res://healthbar_bg.png" type="Texture" id=20]
+[ext_resource path="res://protect_text.png" type="Texture" id=21]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 13 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 15 ), ExtResource( 18 ) ],
+"loop": false,
+"name": "final",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 1 ), ExtResource( 2 ), ExtResource( 1 ), ExtResource( 2 ), ExtResource( 1 ), ExtResource( 2 ), ExtResource( 1 ) ],
+"loop": false,
+"name": "mound",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 7 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "stage1",
+"speed": 1.0
+}, {
+"frames": [ ExtResource( 8 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "stage2",
+"speed": 1.0
+}, {
+"frames": [ ExtResource( 11 ), ExtResource( 10 ) ],
+"loop": true,
+"name": "stage3",
+"speed": 1.0
+}, {
+"frames": [ ExtResource( 5 ), ExtResource( 14 ) ],
+"loop": true,
+"name": "stage4",
+"speed": 1.0
+} ]
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 8.0
+
+[node name="Plant" type="Area2D" groups=["harvestables"]]
+position = Vector2( 50, 50 )
+script = ExtResource( 3 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "stage4"
+
+[node name="PlantingSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="HarvestMessage" type="Sprite" parent="."]
+visible = false
+position = Vector2( 0, -21 )
+texture = ExtResource( 19 )
+
+[node name="ProtectMessage" type="Sprite" parent="."]
+visible = false
+position = Vector2( 1, -21 )
+texture = ExtResource( 21 )
+
+[node name="Health" type="TextureProgress" parent="."]
+visible = false
+margin_left = -8.0
+margin_top = 7.0
+margin_right = 32.0
+margin_bottom = 47.0
+max_value = 3.0
+value = 3.0
+texture_under = ExtResource( 20 )
+texture_progress = ExtResource( 12 )
